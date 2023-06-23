@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Router from 'next/router';
 import Link from 'next/link';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
@@ -17,7 +18,7 @@ const abledLoginBtnStyle = {
 };
 
 const Container = styled.div`
-  display: flex; 
+  display: flex;
   width: auto;
   height: 650px;
   background-image: url('/assets/images/mainImage.svg');
@@ -31,13 +32,13 @@ const Form = styled.form`
   position: absolute;
   right: 8%;
   bottom: 15%;
-`
+`;
 const PhoneInput = styled.input`
   width: 250px;
   height: 46px;
   font-size: 15px;
-  border: 1px solid #8071FC;
-`
+  border: 1px solid #8071fc;
+`;
 
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -52,6 +53,12 @@ const Home = () => {
     setIsPhoneNumber(!!e.target.value);
   };
 
+  const handlePreventEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작인 폼 제출 방지
+    }
+  };
+
   return (
     <Container>
       <div>
@@ -62,9 +69,11 @@ const Home = () => {
               value={phoneNumber}
               placeholder="휴대폰 번호(-없이)를 입력해 주세요."
               onChange={handlePhoneNumberChange}
+              onKeyDown={handlePreventEnter}
             />
           </label>
-          <br /><br />
+          <br />
+          <br />
           <Checkbox
             label={' 이용 약관 동의합니다.'}
             isChecked={isChecked}
@@ -73,21 +82,27 @@ const Home = () => {
           <br />
           {isChecked && isPhoneNumber ? (
             <Link href="/Type">
-              <DefaultButton 
+              <DefaultButton
                 styleOverrides={abledLoginBtnStyle}
                 label={'사전예약하기'}
+                onClick={() => {
+                  Router.push({
+                    pathname: '/Type',
+                    query: { phoneNumber },
+                  });
+                }}
               />
             </Link>
-            ) : (
-              <DefaultButton
-                styleOverrides={disabledLoginBtnStyle}
-                label={'사전예약하기'}
-              />
-            )}
+          ) : (
+            <DefaultButton
+              styleOverrides={disabledLoginBtnStyle}
+              label={'사전예약하기'}
+            />
+          )}
         </Form>
       </div>
     </Container>
   );
-}
+};
 
 export default Home;

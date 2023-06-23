@@ -15,6 +15,11 @@ const GlobalStyle = createGlobalStyle`
     font-style: normal;
   }
 
+	@font-face {
+    font-family: 'IBM Plex Sans KR';
+    src: url('/assets/fonts/IBMPlexSansKR-Regular.ttf') format('ttf');
+    font-weight:
+
   li {
     list-style: none;
   }
