@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const landingController = rquire("./landing/landing.controller");
+const landingController = require("./landing.controller");
 
-router.post('/:idx', landingController)
+router.post("/survey", landingController.createInfo);
 
 module.exports = router;

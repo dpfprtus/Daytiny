@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const landingRouter = require('./api/landing/landing.index');
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+const landingRouter = require("./api/landing/landing.index");
 
-router.use('/landing',landingRouter);
+router.use("/user", landingRouter);
 
 module.exports = router;
