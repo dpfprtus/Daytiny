@@ -2,9 +2,9 @@ import '../public/assets/globals.css';
 import type { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-import Layout from './style/Layout';
+import Layout from '../style/Layout';
 import Title from '../components/layout/Title';
-import SlideTransition from './style/SlideTransition';
+import SlideTransition from '../style/SlideTransition';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}

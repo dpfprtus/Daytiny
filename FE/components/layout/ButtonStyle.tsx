@@ -1,4 +1,4 @@
-import { Colors } from '../../pages/style/GlobalColors';
+import { Colors } from '../../style/GlobalColors';
 import styled, { CSSProperties } from 'styled-components';
 
 export const DefaultButtonStyle = styled.button<{

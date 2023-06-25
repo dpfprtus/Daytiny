@@ -1,7 +1,7 @@
 import WrapperBox from './WrapperBox';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import Title from '../../components/layout/Title';
+import Title from '../components/layout/Title';
 
 const MainLayout = styled.main`
   width: 100%;
