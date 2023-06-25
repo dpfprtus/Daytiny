@@ -56,10 +56,11 @@ const Home = () => {
   };
 
   const handlePhoneNumberChange = (e) => {
+    const phoneNumberRegex = /^(01[0-9]{8,9})$/;
     const value = e.target.value;
     setPhoneNumber(value);
 
-    if (value.length !== 10 && value.length !== 11) {
+    if (!phoneNumberRegex.test(value)) {
       setError('제대로 된 핸드폰 번호를 입력해주세요.');
       setIsPhoneNumber(false);
     } else {
