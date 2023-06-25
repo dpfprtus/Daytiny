@@ -3,7 +3,7 @@ const landingService = require("./landing.service");
 exports.createInfo = async (req, res) => {
   const { phoneNumber, surveyList } = req.body;
 
-  if (phoneNumber.length !== 11) {
+  if (phoneNumber.length !== 11 && phoneNumber !== 10) {
     res.status(400).json({ error: "phonenumber is not suitable or missing" });
     return;
   }
