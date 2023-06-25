@@ -10,7 +10,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://port-0-daytinyfront-dihik2mlj9t2gbk.sel4.cloudtype.app",
+    origin:
+      "https://port-0-daytinyfront-dihik2mlj9t2gbk.sel4.cloudtype.app:3000",
     credentials: true,
   })
 );
