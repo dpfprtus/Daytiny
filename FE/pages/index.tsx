@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Router from 'next/router';
 import Link from 'next/link';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
@@ -17,7 +18,7 @@ const abledLoginBtnStyle = {
 };
 
 const Container = styled.div`
-  display: flex; 
+  display: flex;
   width: auto;
   height: 650px;
   background-image: url('/assets/images/mainImage.svg');
@@ -30,26 +31,47 @@ const Form = styled.form`
   width: 294px;
   position: absolute;
   right: 8%;
-  bottom: 15%;
-`
+  bottom: 10%;
+`;
 const PhoneInput = styled.input`
   width: 250px;
   height: 46px;
   font-size: 15px;
-  border: 1px solid #8071FC;
-`
+  border: 1px solid #8071fc;
+`;
+
+const ErrorMessage = styled.span`
+  color: #e26f6b;
+  font-size: 12px;
+  margin-top: 3px;
+`;
 
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
+  const [error, setError] = useState('');
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
 
   const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-    setIsPhoneNumber(!!e.target.value);
+    const value = e.target.value;
+    setPhoneNumber(value);
+
+    if (value.length !== 10 && value.length !== 11) {
+      setError('제대로 된 핸드폰 번호를 입력해주세요.');
+      setIsPhoneNumber(false);
+    } else {
+      setError('');
+      setIsPhoneNumber(true);
+    }
+  };
+
+  const handlePreventEnter = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작인 폼 제출 방지
+    }
   };
 
   return (
@@ -62,9 +84,13 @@ const Home = () => {
               value={phoneNumber}
               placeholder="휴대폰 번호(-없이)를 입력해 주세요."
               onChange={handlePhoneNumberChange}
+              onKeyDown={handlePreventEnter}
             />
+            <br />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
           </label>
-          <br /><br />
+          <br />
+          <br />
           <Checkbox
             label={' 이용 약관 동의합니다.'}
             isChecked={isChecked}
@@ -73,21 +99,27 @@ const Home = () => {
           <br />
           {isChecked && isPhoneNumber ? (
             <Link href="/Type">
-              <DefaultButton 
+              <DefaultButton
                 styleOverrides={abledLoginBtnStyle}
                 label={'사전예약하기'}
+                onClick={() => {
+                  Router.push({
+                    pathname: '/Type',
+                    query: { phoneNumber },
+                  });
+                }}
               />
             </Link>
-            ) : (
-              <DefaultButton
-                styleOverrides={disabledLoginBtnStyle}
-                label={'사전예약하기'}
-              />
-            )}
+          ) : (
+            <DefaultButton
+              styleOverrides={disabledLoginBtnStyle}
+              label={'사전예약하기'}
+            />
+          )}
         </Form>
       </div>
     </Container>
   );
-}
+};
 
 export default Home;
