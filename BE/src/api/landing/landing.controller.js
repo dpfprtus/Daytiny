@@ -15,8 +15,8 @@ exports.createInfo = async (req, res) => {
   try {
     await landingService.createInfo(phoneNumber, surveyList);
     res.status(200).json({ message: "success" });
-  } catch (e) {
-    const { statusCode, message } = JSON.parse(e.message);
-    res.status(statusCode).json({ error: message });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ error: err.code });
   }
 };
