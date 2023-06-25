@@ -31,7 +31,7 @@ const Form = styled.form`
   width: 294px;
   position: absolute;
   right: 8%;
-  bottom: 15%;
+  bottom: 10%;
 `;
 const PhoneInput = styled.input`
   width: 250px;
@@ -40,17 +40,32 @@ const PhoneInput = styled.input`
   border: 1px solid #8071fc;
 `;
 
+const ErrorMessage = styled.span`
+  color: #e26f6b;
+  font-size: 12px;
+  margin-top: 3px;
+`;
+
 const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
+  const [error, setError] = useState('');
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
 
   const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-    setIsPhoneNumber(!!e.target.value);
+    const value = e.target.value;
+    setPhoneNumber(value);
+
+    if (value.length !== 10 && value.length !== 11) {
+      setError('제대로 된 핸드폰 번호를 입력해주세요.');
+      setIsPhoneNumber(false);
+    } else {
+      setError('');
+      setIsPhoneNumber(true);
+    }
   };
 
   const handlePreventEnter = (e) => {
@@ -71,6 +86,8 @@ const Home = () => {
               onChange={handlePhoneNumberChange}
               onKeyDown={handlePreventEnter}
             />
+            <br />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
           </label>
           <br />
           <br />

@@ -4,12 +4,13 @@ import Router from 'next/router';
 import Modal from 'react-modal';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
+import { registUser } from '../app/api/sendData'; 
 
 const componentsData = [
-  { image: '/assets/images/type1.svg', text: 'Text 1' },
-  { image: '/assets/images/type2.svg', text: 'Text 2' },
-  { image: '/assets/images/type3.svg', text: 'Text 3' },
-  { image: '/assets/images/type4.svg', text: 'Text 4' },
+  { image: '/assets/images/type1.svg', type: 'A' },
+  { image: '/assets/images/type2.svg', type: 'B' },
+  { image: '/assets/images/type3.svg', type: 'C' },
+  { image: '/assets/images/type4.svg', type: 'D' },
 ];
 
 const disabledLoginBtnStyle = {
@@ -51,10 +52,6 @@ const ComponentWrapper = styled.div`
   height: 170px;
   border: 2px solid transparent;
   cursor: pointer;
-
-  &:hover {
-    border-color: #8071fc;
-  }
 `;
 
 const Image = styled.img`
@@ -145,13 +142,12 @@ const Component = ({ image, onClick, isSelected }) => {
   const handleClick = () => {
     onClick();
   };
-
+  const selectedImage = isSelected ? `${image.split('.svg')[0]}_selected.svg` : image;
   return (
     <ComponentWrapper
-      style={{ borderColor: isSelected ? '#8071FC' : 'transparent' }}
       onClick={handleClick}
     >
-      <Image src={image} alt="Component Image" />
+      <Image src={selectedImage} alt="Component Image" />
     </ComponentWrapper>
   );
 };
@@ -161,11 +157,17 @@ const Type = () => {
   const { phoneNumber } = router.query;
   const [openDialog, setOpenDialog] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponents, setSelectedComponents] = useState([]);
 
   const handleComponentClick = (index) => {
-    setSelectedComponent(index);
-    setIsChecked(true);
+    const updatedComponents = [...selectedComponents];
+    if (updatedComponents.includes(index)) {
+      updatedComponents.splice(updatedComponents.indexOf(index), 1);
+    } else {
+      updatedComponents.push(index);
+    }
+    setSelectedComponents(updatedComponents);
+    setIsChecked(updatedComponents.length > 0);
   };
 
   const handleOpenDialog = () => {
@@ -174,6 +176,18 @@ const Type = () => {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+
+  const onSubmit = () => {
+    const surveyList = selectedComponents.sort().map((index) => componentsData[index].type);
+    const formData = {
+      phoneNumber: phoneNumber,
+      surveyList: surveyList,
+    };
+    console.log(phoneNumber, surveyList);
+    console.log(process.env.HOST);
+    console.log(process.env.PORT);
+    registUser(formData);
   };
 
   return (
@@ -186,10 +200,10 @@ const Type = () => {
           </QuestionBox>
           {componentsData.map((data, index) => (
             <Component
-              key={index}
+              key={data.type}
               image={data.image}
               onClick={() => handleComponentClick(index)}
-              isSelected={selectedComponent === index}
+              isSelected={selectedComponents.includes(index)}
             />
           ))}
           {!isChecked ? (
@@ -202,6 +216,7 @@ const Type = () => {
               styleOverrides={abledLoginBtnStyle}
               label={'제출하기'}
               onClick={(e) => {
+                onSubmit();
                 e.preventDefault();
                 e.stopPropagation();
                 handleOpenDialog();
