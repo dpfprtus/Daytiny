@@ -184,9 +184,6 @@ const Type = () => {
       phoneNumber: phoneNumber,
       surveyList: surveyList,
     };
-    console.log(phoneNumber, surveyList);
-    console.log(process.env.HOST);
-    console.log(process.env.PORT);
     registUser(formData);
   };
 
