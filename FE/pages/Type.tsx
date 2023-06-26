@@ -4,7 +4,7 @@ import Router from 'next/router';
 import Modal from 'react-modal';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
-import { registUser } from '../app/api/sendData'; 
+import { registUser } from '../app/api/sendData';
 
 const componentsData = [
   { image: '/assets/images/type1.svg', type: 'A' },
@@ -110,12 +110,14 @@ const DialogContentText = styled.div`
 
 const DialogConfirmButton = styled.button`
   display: flex;
+  background-color: transparent;
   font-family: 'Spoqa Han Sans Neo', sans-serif;
   font-size: 16px;
   width: 280px;
   justify-content: center;
   align-items: center;
   text-align: center;
+  border: none;
   margin-top: 7px;
   transition: all 0.3s ease;
   &:hover {
@@ -142,11 +144,11 @@ const Component = ({ image, onClick, isSelected }) => {
   const handleClick = () => {
     onClick();
   };
-  const selectedImage = isSelected ? `${image.split('.svg')[0]}_selected.svg` : image;
+  const selectedImage = isSelected
+    ? `${image.split('.svg')[0]}_selected.svg`
+    : image;
   return (
-    <ComponentWrapper
-      onClick={handleClick}
-    >
+    <ComponentWrapper onClick={handleClick}>
       <Image src={selectedImage} alt="Component Image" />
     </ComponentWrapper>
   );
@@ -179,7 +181,9 @@ const Type = () => {
   };
 
   const onSubmit = () => {
-    const surveyList = selectedComponents.sort().map((index) => componentsData[index].type);
+    const surveyList = selectedComponents
+      .sort()
+      .map((index) => componentsData[index].type);
     const formData = {
       phoneNumber: phoneNumber,
       surveyList: surveyList,
@@ -227,14 +231,18 @@ const Type = () => {
           style={customModalStyles}
           contentLabel="Dialog"
         >
-          <DialogImg src='/assets/images/dialogBg.svg'/>
+          <DialogImg src="/assets/images/dialogBg.svg" />
           <DialogContent>감사합니다</DialogContent>
           <DialogContentText>제출 완료되었습니다.</DialogContentText>
-          <div style={{ marginTop: '20px', borderTop: '1px solid #F3F3F3'}}>
-            <DialogConfirmButton onClick={() => {
-              handleCloseDialog();
-              Router.push('/')
-              }}>확인</DialogConfirmButton>
+          <div style={{ marginTop: '20px', borderTop: '1px solid #F3F3F3' }}>
+            <DialogConfirmButton
+              onClick={() => {
+                handleCloseDialog();
+                Router.push('/');
+              }}
+            >
+              확인
+            </DialogConfirmButton>
           </div>
         </Modal>
       </div>
