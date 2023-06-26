@@ -11,6 +11,7 @@ export const DefaultButtonStyle = styled.button<{
   justify-content: center;
   width: 294px;
   height: 60px;
+  border: 0px solid #ffffff;
   border-radius: 12px;
   color: ${Colors.bgColor};
   background-color: #8071fc;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Router from 'next/router';
 import Modal from 'react-modal';
@@ -13,6 +13,7 @@ const componentsData = [
   { image: '/assets/images/type4.svg', type: 'D' },
 ];
 
+// 이전에 매번 생성되던 스타일을 상수로 선언하여 재사용
 const disabledLoginBtnStyle = {
   fontSize: '24px',
   fontFamily: 'IBM Plex Sans KR, sans-serif',
@@ -27,6 +28,7 @@ const abledLoginBtnStyle = {
   fontFamily: 'IBM Plex Sans KR, sans-serif',
   marginTop: '30px',
   fontSize: '24px',
+  cursor: 'pointer',
 };
 
 const Container = styled.div`
@@ -117,8 +119,8 @@ const DialogConfirmButton = styled.button`
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: none;
   margin-top: 7px;
+  border: none;
   transition: all 0.3s ease;
   &:hover {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -138,15 +140,20 @@ const customModalStyles = {
     overflow: 'auto',
     borderRadius: '30px',
   },
+  overlay: {
+    backgroundColor: 'rgba(63, 63, 64, 0.5)',
+  },
 };
 
 const Component = ({ image, onClick, isSelected }) => {
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onClick();
-  };
+  }, [onClick]);
+
   const selectedImage = isSelected
     ? `${image.split('.svg')[0]}_selected.svg`
     : image;
+
   return (
     <ComponentWrapper onClick={handleClick}>
       <Image src={selectedImage} alt="Component Image" />
@@ -161,26 +168,29 @@ const Type = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [selectedComponents, setSelectedComponents] = useState([]);
 
-  const handleComponentClick = (index) => {
-    const updatedComponents = [...selectedComponents];
-    if (updatedComponents.includes(index)) {
-      updatedComponents.splice(updatedComponents.indexOf(index), 1);
-    } else {
-      updatedComponents.push(index);
-    }
-    setSelectedComponents(updatedComponents);
-    setIsChecked(updatedComponents.length > 0);
-  };
+  // 선택된 컴포넌트 반환하는 로직
+  const handleComponentClick = useCallback((index) => {
+    setSelectedComponents((prevSelectedComponents) => {
+      const updatedComponents = [...prevSelectedComponents];
+      if (updatedComponents.includes(index)) {
+        updatedComponents.splice(updatedComponents.indexOf(index), 1);
+      } else {
+        updatedComponents.push(index);
+      }
+      setIsChecked(updatedComponents.length > 0);
+      return updatedComponents;
+    });
+  }, []);
 
-  const handleOpenDialog = () => {
+  const handleOpenDialog = useCallback(() => {
     setOpenDialog(true);
-  };
+  }, []);
 
-  const handleCloseDialog = () => {
+  const handleCloseDialog = useCallback(() => {
     setOpenDialog(false);
-  };
+  }, []);
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     const surveyList = selectedComponents
       .sort()
       .map((index) => componentsData[index].type);
@@ -189,7 +199,7 @@ const Type = () => {
       surveyList: surveyList,
     };
     registUser(formData);
-  };
+  }, [phoneNumber, selectedComponents]);
 
   return (
     <Container>
@@ -217,9 +227,9 @@ const Type = () => {
               styleOverrides={abledLoginBtnStyle}
               label={'제출하기'}
               onClick={(e) => {
-                onSubmit();
                 e.preventDefault();
                 e.stopPropagation();
+                onSubmit();
                 handleOpenDialog();
               }}
             />

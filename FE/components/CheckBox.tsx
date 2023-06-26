@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Dialog from "./Dialog";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Dialog from './Dialog';
 
 const StyledInput = styled.input`
   appearance: none;
@@ -10,7 +10,7 @@ const StyledInput = styled.input`
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 1.5rem;
     height: 1.5rem;
@@ -75,9 +75,7 @@ function Checkbox(props) {
         alt="Agree Details"
         onClick={handleAgreeClick}
       />
-      {isDialogOpen && (
-        <Dialog onClose={handleCloseDialog} />
-      )}
+      {isDialogOpen && <Dialog onClose={handleCloseDialog} />}
     </StyledLabel>
   );
 }

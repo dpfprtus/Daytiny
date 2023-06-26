@@ -51,10 +51,11 @@ const Dialog = ({ onClose }) => {
     <DialogContainer onClick={handleDialogClick}>
       <DialogTitle>개인정보 처리방침</DialogTitle>
       <CloseButton onClick={onClose}>X</CloseButton>
-        <hr />
+      <hr />
       <DialogContent>
         <p>본 응답 자의 개인정보를 이용하는 목적은 다음과 같습니다.</p>
-        <br /><br />
+        <br />
+        <br />
         <ul>
           <li> 수집 목적 : 서비스 알림 및 인터뷰요청</li>
           <br />
@@ -62,8 +63,12 @@ const Dialog = ({ onClose }) => {
           <br />
           <li> 보유/이용기간 : 서비스 알림 제공 전까지</li>
         </ul>
-        <br /><br />
-        <p>동의를 거부할 권리가 있으며 동의 거부 시, 서비스 이용에 제한이 될 수 있습니다.</p>
+        <br />
+        <br />
+        <p>
+          동의를 거부할 권리가 있으며 동의 거부 시, 서비스 이용에 제한이 될 수
+          있습니다.
+        </p>
       </DialogContent>
     </DialogContainer>
   );
