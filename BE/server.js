@@ -8,12 +8,7 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://00c36849.daytiny-real.pages.dev/",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
