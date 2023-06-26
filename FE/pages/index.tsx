@@ -38,6 +38,10 @@ const PhoneInput = styled.input`
   height: 46px;
   font-size: 15px;
   border: 1px solid #8071fc;
+
+  &:focus {
+    border: 1px solid #00d282;
+  }
 `;
 
 const ErrorMessage = styled.span`
