@@ -1,27 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Router from 'next/router';
-import Link from 'next/link';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
-import Checkbox from '../components/CheckBox';
+import Link from 'next/link';
 
+// 이전에 매번 생성되던 스타일을 상수로 선언하여 재사용
 const disabledLoginBtnStyle = {
   fontSize: '24px',
+  fontFamily: 'IBM Plex Sans KR, sans-serif',
   color: '#E4DDDD',
   backgroundColor: '#BFBBBB',
+  marginTop: '30px',
   pointerEvents: 'none' as 'none',
 };
 
 const abledLoginBtnStyle = {
   backgroundColor: '#8071FC',
+  fontFamily: 'IBM Plex Sans KR, sans-serif',
+  marginTop: '30px',
   fontSize: '24px',
+  cursor: 'pointer',
 };
 
 const Container = styled.div`
   display: flex;
-  width: auto;
   height: 650px;
-  background-image: url('/assets/images/mainImage.svg');
+  background-image: url('/assets/images/bg.svg');
+  background-size: 380px 660px;
   text-align: center;
   justify-content: center;
   background-repeat: no-repeat;
@@ -31,94 +36,52 @@ const Form = styled.form`
   width: 294px;
   position: absolute;
   right: 8%;
-  bottom: 10%;
-`;
-const PhoneInput = styled.input`
-  width: 250px;
-  height: 46px;
-  font-size: 15px;
-  border: 1px solid #8071fc;
-
-  &:focus {
-    border: 1px solid #00d282;
-  }
+  bottom: 13%;
 `;
 
-const ErrorMessage = styled.span`
-  color: #e26f6b;
-  font-size: 12px;
-  margin-top: 3px;
+const Image = styled.img`
+  width: 100%;
+  height: auto;
 `;
 
-const Home = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const [isPhoneNumber, setIsPhoneNumber] = useState(false);
-  const [error, setError] = useState('');
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
+const Type = () => {
+  const [isReady, setIsReady] = useState(false);
 
-  const handlePhoneNumberChange = (e) => {
-    const phoneNumberRegex = /^(01[0-9]{8,9})$/;
-    const value = e.target.value;
-    setPhoneNumber(value);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 2500);
 
-    if (!phoneNumberRegex.test(value)) {
-      setError('제대로 된 핸드폰 번호를 입력해주세요.');
-      setIsPhoneNumber(false);
-    } else {
-      setError('');
-      setIsPhoneNumber(true);
-    }
-  };
-
-  const handlePreventEnter = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // 기본 동작인 폼 제출 방지
-    }
-  };
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <Container>
       <div>
+        <Image
+          src={'/assets/images/firstPage.svg'}
+          alt="FirstPage Image"
+          style={{ marginTop: '20px' }}
+        />
         <Form>
-          <label>
-            <PhoneInput
-              type="text"
-              value={phoneNumber}
-              placeholder="휴대폰 번호(-없이)를 입력해 주세요."
-              onChange={handlePhoneNumberChange}
-              onKeyDown={handlePreventEnter}
-            />
-            <br />
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-          </label>
-          <br />
-          <br />
-          <Checkbox
-            label={' 이용 약관 동의합니다.'}
-            isChecked={isChecked}
-            onClick={handleCheckboxChange}
-          />
-          <br />
-          {isChecked && isPhoneNumber ? (
-            <Link href="/Type">
-              <DefaultButton
-                styleOverrides={abledLoginBtnStyle}
-                label={'사전예약하기'}
-                onClick={() => {
-                  Router.push({
-                    pathname: '/Type',
-                    query: { phoneNumber },
-                  });
-                }}
-              />
-            </Link>
-          ) : (
+          {!isReady ? (
             <DefaultButton
               styleOverrides={disabledLoginBtnStyle}
-              label={'사전예약하기'}
+              label={'다음'}
+            />
+          ) : (
+            <DefaultButton
+              styleOverrides={abledLoginBtnStyle}
+              label={'다음'}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                Router.push({
+                  pathname: '/Join',
+                });
+              }}
             />
           )}
         </Form>
@@ -127,4 +90,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Type;
