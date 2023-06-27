@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Router from 'next/router';
@@ -228,6 +229,11 @@ const Type = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                ReactGA.event({
+                  category: 'Button',
+                  action: 'Click',
+                  label: 'Button Clicked',
+                });
                 onSubmit();
               }}
             />
