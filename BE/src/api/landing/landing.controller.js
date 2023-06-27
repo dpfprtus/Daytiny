@@ -3,10 +3,6 @@ const landingService = require("./landing.service");
 exports.createInfo = async (req, res) => {
   const { phoneNumber, surveyList } = req.body;
 
-  if (phoneNumber.length !== 11 && phoneNumber !== 10) {
-    res.status(400).json({ error: "phonenumber is not suitable or missing" });
-    return;
-  }
 
   if (typeof surveyList !== "string") {
     res.status(400).json({ error: "surveylist is not a string or missing" });
@@ -18,5 +14,21 @@ exports.createInfo = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({ error: err.code });
+  }
+};
+
+exports.checkPhoneInfo = async (req, res) => {
+  const { phoneNumber } = req.body;
+
+  try {
+    const isDuplicate = await landingService.checkPhoneDuplicate(phoneNumber);
+    if (isDuplicate) {
+      res.status(409).json({ message: "Phone number is duplicated" });
+    } else {
+      res.status(200).json({ message: "Phone number is valid" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
