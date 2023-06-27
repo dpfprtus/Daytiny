@@ -7,3 +7,10 @@ export const registUser = async (formData) => {
   });
   return response;
 };
+
+export const registPhone = async (formData) => {
+  const response = await axiosBaseURL.post('/api/user/phone', {
+    phoneNumber: formData.phoneNumber,
+  });
+  return response;
+};

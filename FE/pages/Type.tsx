@@ -182,15 +182,11 @@ const Type = () => {
     });
   }, []);
 
-  const handleOpenDialog = useCallback(() => {
-    setOpenDialog(true);
-  }, []);
-
   const handleCloseDialog = useCallback(() => {
     setOpenDialog(false);
   }, []);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     const surveyList = selectedComponents
       .sort()
       .map((index) => componentsData[index].type);
@@ -198,7 +194,10 @@ const Type = () => {
       phoneNumber: phoneNumber,
       surveyList: surveyList,
     };
-    registUser(formData);
+    const result = await registUser(formData);
+    if (result.status === 200) {
+      setOpenDialog(true);
+    }
   }, [phoneNumber, selectedComponents]);
 
   return (
@@ -230,7 +229,6 @@ const Type = () => {
                 e.preventDefault();
                 e.stopPropagation();
                 onSubmit();
-                handleOpenDialog();
               }}
             />
           )}

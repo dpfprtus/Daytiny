@@ -29,7 +29,7 @@ exports.phoneDuplicateCheck = (phoneNumber) => {
       `SELECT COUNT(*) AS count FROM users WHERE phone_number =${phoneNumber}`,
       (err, rows) => {
         if (err) reject(err);
-        resolve(rows);
+        resolve(rows[0].count);
       }
     );
   });
