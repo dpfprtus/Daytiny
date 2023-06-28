@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import ReactGA from 'react-ga';
 import Router from 'next/router';
 import Modal from 'react-modal';
 import DefaultButton from '../components/Button';
@@ -181,6 +182,11 @@ const Home = () => {
               styleOverrides={abledLoginBtnStyle}
               label={'사전예약하기'}
               onClick={(e) => {
+                ReactGA.event({
+                  category: 'Button',
+                  action: 'Click',
+                  label: 'Button Clicked',
+                });
                 e.preventDefault();
                 e.stopPropagation();
                 onSubmit();

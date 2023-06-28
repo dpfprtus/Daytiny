@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import DefaultButton from '../components/Button';
 import styled from 'styled-components';
-import Link from 'next/link';
 
 // 이전에 매번 생성되던 스타일을 상수로 선언하여 재사용
 const disabledLoginBtnStyle = {

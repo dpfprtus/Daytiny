@@ -1,4 +1,7 @@
 import '../public/assets/globals.css';
+import ReactGA from 'react-ga';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
@@ -86,6 +89,22 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  useEffect(() => {
+    ReactGA.initialize(process.env.G_TRACKING_ID);
+    ReactGA.pageview(window.location.pathname);
+
+    const handleRouteChange = (url) => {
+      ReactGA.pageview(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, []);
+
   return (
     <>
       <GlobalStyle />
