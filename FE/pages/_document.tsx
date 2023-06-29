@@ -26,10 +26,40 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
-        <meta charSet="utf-8" />
-        <title>DAYTINY</title>
-        <link rel="icon" href="/logo.svg" />
+        <Head>
+          <meta charSet="utf-8" />
+          <title>DAYTINY</title>
+          <link rel="icon" href="/logo.svg" />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.G_TRACKING_ID_SNU}`}
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.G_TRACKING_ID_SNU}');
+              `,
+            }}
+          ></script>
+
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.G_TRACKING_ID_EWHA}`}
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.G_TRACKING_ID_EWHA}');
+              `,
+            }}
+          ></script>
+        </Head>
         <body>
           <Main />
           <NextScript />

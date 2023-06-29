@@ -13,7 +13,8 @@ module.exports = {
       process.env.NODE_ENV === 'production'
         ? process.env.NEXT_PUBLIC_API_URL_PROD
         : process.env.NEXT_PUBLIC_API_URL_DEV,
-    G_TRACKING_ID: process.env.G_TRACKING_ID,
+    G_TRACKING_ID_EWHA: process.env.G_TRACKING_ID_EWHA,
+    G_TRACKING_ID_SNU: process.env.G_TRACKING_ID_SNU,
   },
   images: {
     unoptimized: true,
